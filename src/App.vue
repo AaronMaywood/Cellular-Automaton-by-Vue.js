@@ -4,7 +4,7 @@ import Cell from './components/Cell.vue'
 
 let counter = 0
 function nextTick(timestamp) {
-	if(counter++>60){
+	if(counter++>20){
 		update();
 		counter = 0
 	}
