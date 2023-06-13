@@ -9,7 +9,7 @@ const props = defineProps({
 
 <template>
 	<div>
-		{{ cells[c][r] }}
+		{{ cells[c][r] ? '■' : '□' }}
 	</div>
 </template>
 
