@@ -1,9 +1,9 @@
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
 export const ROWS = 4;
 export const COLS = 4;
 
-export const cells = reactive([
+export const cells = ref([
 	// Clock 4x4 - https://ja.wikipedia.org/wiki/%E6%99%82%E8%A8%88_(%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B2%E3%83%BC%E3%83%A0)
 	[0,1,0,0,0],
 	[0,0,1,1,0],
@@ -35,7 +35,7 @@ export function update(){
 	// リアクティブなしの値のみをコピー（ディープコピー）
 	// ディープコピーの方法はこちらを参照
 	// https://developer.mozilla.org/ja/docs/Glossary/Deep_copy
-	let next = JSON.parse(JSON.stringify(cells))
+	let next = JSON.parse(JSON.stringify(cells.value))
 	/* ↑の一行は↓に相当
 	let next
 	{
@@ -99,53 +99,49 @@ export function update(){
 
 	// 計算した最新情報を現在の値に反映
 	// →cellsはリアクティブ値なので画面上の表示も更新される
-	for(let y = 0 ; y < ROWS ; y++){
-		for(let x = 0 ; x < COLS ; x++){
-			cells[x][y] = next[x][y]
-		}
-	}
+	cells.value = JSON.parse(JSON.stringify(next))
 }
 
 function upper(x,y){
 	if(y <= 0){ return 0 }
-	return cells[x][y-1]
+	return cells.value[x][y-1]
 }
 
 function bottom(x,y){
 	if(y >= ROWS-1){ return 0 }
-	return cells[x][y+1]
+	return cells.value[x][y+1]
 }
 
 function right(x,y){
 	if(x >= COLS-1){ return 0 }
-	return cells[x+1][y]
+	return cells.value[x+1][y]
 }
 
 function left(x,y){
 	if(x <= 0){ return 0 }
-	return cells[x-1][y]
+	return cells.value[x-1][y]
 }
 
 function ul(x,y){
 	if(y <= 0){ return 0 }
 	if(x <= 0){ return 0 }
-	return cells[x-1][y-1]
+	return cells.value[x-1][y-1]
 }
 
 function ur(x,y){
 	if(y <= 0){ return 0 }
 	if(x >= COLS-1){ return 0 }
-	return cells[x+1][y-1]
+	return cells.value[x+1][y-1]
 }
 
 function bl(x,y){
 	if(y >= ROWS-1){ return 0 }
 	if(x <= 0){ return 0 }
-	return cells[x-1][y+1]
+	return cells.value[x-1][y+1]
 }
 
 function br(x,y){
 	if(y >= ROWS-1){ return 0 }
 	if(x >= COLS-1){ return 0 }
-	return cells[x+1][y+1]
+	return cells.value[x+1][y+1]
 }
