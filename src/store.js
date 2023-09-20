@@ -1,31 +1,20 @@
 import { ref } from 'vue'
 
-export const ROWS = 4;
-export const COLS = 4;
+export const ROWS = 3;
+export const COLS = 3;
 
 export const cells = ref([
+	// Blinker 3x3 - https://ja.wikipedia.org/wiki/%E6%8C%AF%E5%8B%95%E5%AD%90_(%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B2%E3%83%BC%E3%83%A0)
+	[0,0,0],
+	[1,1,1],
+	[0,0,0],
 	// Clock 4x4 - https://ja.wikipedia.org/wiki/%E6%99%82%E8%A8%88_(%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B2%E3%83%BC%E3%83%A0)
+	/*
 	[0,1,0,0,0],
 	[0,0,1,1,0],
 	[1,1,0,0,0],
 	[0,0,1,0,0],
 	[0,0,0,0,0],
-	/*
-	// Blinker 3x3 - https://ja.wikipedia.org/wiki/%E6%8C%AF%E5%8B%95%E5%AD%90_(%E3%83%A9%E3%82%A4%E3%83%95%E3%82%B2%E3%83%BC%E3%83%A0)
-	[0,0,0,0,0],
-	[0,0,0,0,0],
-	[0,1,1,1,0],
-	[0,0,0,0,0],
-	[0,0,0,0,0],
-	*/
-	/*
-	[1,1,0],
-	[1,0,0],
-	[0,0,0],
-	// ↓の次のコマでは以下のようになるべき
-	// [1,1,0],
-	// [1,1,0],	// 真ん中が1になる
-	// [0,0,0],
 	*/
 ])
 
@@ -33,32 +22,7 @@ export const cells = ref([
 // setIntervalやWindow.requestAnimationFrame()で定期更新することを想定している
 export function update(){
 	// リアクティブなしの値のみをコピー（ディープコピー）
-	// ディープコピーの方法はこちらを参照
-	// https://developer.mozilla.org/ja/docs/Glossary/Deep_copy
 	let next = JSON.parse(JSON.stringify(cells.value))
-	/* ↑の一行は↓に相当
-	let next
-	{
-		// 新しい状態を記録するための next[COLS][ROWS]  を準備する
-		// 
-		// ↓だとリアクティブ値をコピーしてしまい、上書きで元データを破壊してしまう
-		// const next = Array.from(cells)
-		// したがって配列をコピーする
-		//
-		// Array[COLS][ROWS] を初期化し、
-		next = Array.from(Array(COLS).keys()).map(
-			(i) => Array.from(Array(ROWS).keys()).map(
-				(i) => ''
-			)
-		)
-		// 内容をコピー
-		for(let y = 0 ; y < ROWS ; y++){
-			for(let x = 0 ; x < COLS ; x++){
-				next[x][y] = cells[x][y] ? 1 : 0
-			}
-		}
-	}
-	*/
 
 	// calc old -> next
 	for(let y = 0 ; y < ROWS ; y++){
