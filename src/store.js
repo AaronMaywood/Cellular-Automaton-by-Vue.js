@@ -1,9 +1,9 @@
-import { reactive } from 'vue'
+import { ref } from 'vue'
 
 export const ROWS = 9;
 export const COLS = 16;
 
-export const cells = reactive([
+export const cells = ref([
 	// ペンタデカスロン
 	[0,0,0,0,0,0,0,0,0],
 	[0,0,0,0,0,0,0,0,0],
@@ -52,32 +52,7 @@ export const cells = reactive([
 // setIntervalやWindow.requestAnimationFrame()で定期更新することを想定している
 export function update(){
 	// リアクティブなしの値のみをコピー（ディープコピー）
-	// ディープコピーの方法はこちらを参照
-	// https://developer.mozilla.org/ja/docs/Glossary/Deep_copy
-	let next = JSON.parse(JSON.stringify(cells))
-	/* ↑の一行は↓に相当
-	let next
-	{
-		// 新しい状態を記録するための next[COLS][ROWS]  を準備する
-		// 
-		// ↓だとリアクティブ値をコピーしてしまい、上書きで元データを破壊してしまう
-		// const next = Array.from(cells)
-		// したがって配列をコピーする
-		//
-		// Array[COLS][ROWS] を初期化し、
-		next = Array.from(Array(COLS).keys()).map(
-			(i) => Array.from(Array(ROWS).keys()).map(
-				(i) => ''
-			)
-		)
-		// 内容をコピー
-		for(let y = 0 ; y < ROWS ; y++){
-			for(let x = 0 ; x < COLS ; x++){
-				next[x][y] = cells[x][y] ? 1 : 0
-			}
-		}
-	}
-	*/
+	let next = JSON.parse(JSON.stringify(cells.value))
 
 	// calc old -> next
 	for(let y = 0 ; y < ROWS ; y++){
@@ -118,53 +93,49 @@ export function update(){
 
 	// 計算した最新情報を現在の値に反映
 	// →cellsはリアクティブ値なので画面上の表示も更新される
-	for(let y = 0 ; y < ROWS ; y++){
-		for(let x = 0 ; x < COLS ; x++){
-			cells[x][y] = next[x][y]
-		}
-	}
+	cells.value = JSON.parse(JSON.stringify(next))
 }
 
 function upper(x,y){
 	if(y <= 0){ return 0 }
-	return cells[x][y-1]
+	return cells.value[x][y-1]
 }
 
 function bottom(x,y){
 	if(y >= ROWS-1){ return 0 }
-	return cells[x][y+1]
+	return cells.value[x][y+1]
 }
 
 function right(x,y){
 	if(x >= COLS-1){ return 0 }
-	return cells[x+1][y]
+	return cells.value[x+1][y]
 }
 
 function left(x,y){
 	if(x <= 0){ return 0 }
-	return cells[x-1][y]
+	return cells.value[x-1][y]
 }
 
 function ul(x,y){
 	if(y <= 0){ return 0 }
 	if(x <= 0){ return 0 }
-	return cells[x-1][y-1]
+	return cells.value[x-1][y-1]
 }
 
 function ur(x,y){
 	if(y <= 0){ return 0 }
 	if(x >= COLS-1){ return 0 }
-	return cells[x+1][y-1]
+	return cells.value[x+1][y-1]
 }
 
 function bl(x,y){
 	if(y >= ROWS-1){ return 0 }
 	if(x <= 0){ return 0 }
-	return cells[x-1][y+1]
+	return cells.value[x-1][y+1]
 }
 
 function br(x,y){
 	if(y >= ROWS-1){ return 0 }
 	if(x >= COLS-1){ return 0 }
-	return cells[x+1][y+1]
+	return cells.value[x+1][y+1]
 }
