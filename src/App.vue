@@ -1,5 +1,5 @@
 <script setup>
-import { ROWS, COLS, cells, update } from './store.js'
+import { cells, update } from './store.js'
 import Cell from './components/Cell.vue'
 
 let counter = 0
@@ -23,6 +23,3 @@ requestAnimationFrame(nextTick);
 		</tr>
 	</table>
 </template>
-
-<style scoped>
-</style>
